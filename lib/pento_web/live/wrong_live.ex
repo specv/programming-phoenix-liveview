@@ -1,10 +1,7 @@
 defmodule PentoWeb.WrongLive do
   use Phoenix.LiveView, layout: {PentoWeb.LayoutView, "live.html"}
-  alias Pento.Accounts
 
   def mount(_params, session, socket) do
-
-    user = Accounts.get_user_by_session_token(session["user_token"])
     {
       :ok,
       assign(
@@ -14,7 +11,7 @@ defmodule PentoWeb.WrongLive do
         finished?: false,
         target: Enum.random(1..10),
         session_id: session["live_socket_id"],
-        current_user: user
+        current_user: socket.assigns.current_user
       )
     }
   end
@@ -37,6 +34,8 @@ defmodule PentoWeb.WrongLive do
           <%= @current_user.email %>
           <%= @session_id %>
         </pre>
+
+        <a href="/redirect"> Redirect </a>
       </h2>
     <% end %>
     """
