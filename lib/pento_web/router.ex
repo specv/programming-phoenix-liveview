@@ -78,6 +78,18 @@ defmodule PentoWeb.Router do
     live_session :default, on_mount: PentoWeb.UserAuthLive do
       live "/guess", WrongLive
       live "/redirect", RedirectLive
+
+      # Notice that we’ve added our routes to the browser scope that pipes requests
+      # through the :require_authenticated_user plug, and within the live_session block.
+      # This will ensure that only logged-in users can see the products pages. We’ll also
+      # be able to redirect to other views within this block without forcing a page reload.
+      # These details will become important later on in this book.
+      live "/products", ProductLive.Index, :index
+      live "/products/new", ProductLive.Index, :new
+      live "/products/:id/edit", ProductLive.Index, :edit
+
+      live "/products/:id", ProductLive.Show, :show
+      live "/products/:id/show/edit", ProductLive.Show, :edit
     end
 
     get "/users/settings", UserSettingsController, :edit
